@@ -758,7 +758,7 @@ app.route('/add-asset')
 
     // ✅ Define assetFields here
     const assetFields = [
-      "asset_id", "serial_number", "item_category", "model", "department", "location",
+      "asset_id", "serial_number", "item_category", "model_name", "department", "location",
       "username", "processor", "speed", "hdd", "ram", "monitor", "ip", "mac",
       "warranty", "switch_port", "switch_ip", "order_no", "order_date",
       "doi", "invoice_no", "invoice_date", "cost", "supplier", "ssd",
