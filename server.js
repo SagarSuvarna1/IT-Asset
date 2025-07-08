@@ -756,17 +756,27 @@ app.route('/add-asset')
     const institution_id = req.session.user.institution_id;
     const { serial_number, asset_id } = formData;
 
+    // ✅ Define assetFields here
+    const assetFields = [
+      "asset_id", "serial_number", "item_category", "model", "department", "location",
+      "username", "processor", "speed", "hdd", "ram", "monitor", "ip", "mac",
+      "warranty", "switch_port", "switch_ip", "order_no", "order_date",
+      "doi", "invoice_no", "invoice_date", "cost", "supplier", "ssd",
+      "amc_or_warranty", "remarks"
+    ];
+
     const checkQuery = `
       SELECT * FROM assets WHERE (asset_id = ? OR serial_number = ?) AND institution_id = ?
     `;
+
     db.get(checkQuery, [asset_id, serial_number, institution_id], (err, existingAsset) => {
       if (err) return res.status(500).send('❌ Error checking for existing asset.');
 
       if (existingAsset) {
-        // Load again form with same data and error message
+        // If duplicate asset found, reload form with error
         db.all("SELECT * FROM departments WHERE institution_id = ?", [institution_id], (err1, departments) => {
           db.all("SELECT * FROM models WHERE institution_id = ?", [institution_id], (err2, models) => {
-            db.all("SELECT * FROM locations WHERE institution_id = ?", [institution_id], (err3, locations) => {
+            db.all("SELECT * FROM locations WHERE institution_id = ? ORDER BY floor, location_name", [institution_id], (err3, locations) => {
               return res.render('add_asset', {
                 departments,
                 models,
@@ -793,7 +803,7 @@ app.route('/add-asset')
             return res.status(500).send('❌ Failed to insert asset.');
           }
 
-          // Audit trail
+          // ✅ Audit Log
           logAudit(
             asset_id,
             'Add Asset',
@@ -801,6 +811,7 @@ app.route('/add-asset')
             `New asset added by ${req.session.user.username} for institution ${institution_id}`
           );
 
+          // ✅ Redirect with success
           res.redirect('/add-asset?success=1');
         });
       }
