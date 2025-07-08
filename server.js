@@ -29,7 +29,7 @@ app.locals.toIST = utc =>
     .toFormat('dd/MM/yyyy, hh:mm:ss a');
 
 
-const dbPath = path.join('/var/data', 'it_asset.db');
+const dbPath = path.join(__dirname, 'data', 'it_asset.db'); // ✅ Correct path
 const db = new sqlite3.Database(dbPath);
 const upload = multer({ dest: 'uploads/' });
 app.use(session({
