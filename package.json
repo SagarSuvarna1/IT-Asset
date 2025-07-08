@@ -1,14 +1,14 @@
-{{
+{
   "name": "it-asset-software",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node server.js"
   },
   "keywords": [],
-  "author": "Sagar Suvarna",
+  "author": "",
   "license": "ISC",
-  "description": "IT Asset Management Software",
+  "description": "",
   "dependencies": {
     "body-parser": "^2.2.0",
     "connect-flash": "^0.1.1",
@@ -24,3 +24,4 @@
     "xlsx": "^0.18.5"
   }
 }
+
