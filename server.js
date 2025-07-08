@@ -757,12 +757,13 @@ app.route('/add-asset')
     const { serial_number, asset_id } = formData;
 
     // ✅ Define assetFields here
-    const assetFields = [
-  "asset_id", "serial_number", "item_category", "model_name", "department", "location",
-  "user_name", "processor", "speed", "hdd", "ram", "monitor", "ip", "mac",
-  "warranty", "switch_port_no", "switch_ip_address", "order_no", "order_date",
-  "doi", "invoice_no", "invoice_date", "cost", "supplier", "ssd",
-  "amc_warranty", "remarks"
+const assetFields = [
+  "asset_type", "item_category", "item_sub_category", "serial_number", "asset_id",
+  "model_name", "user_name", "processor", "location", "speed", "hdd", "monitor", "ram",
+  "ip_address", "mac_address", "warranty", "switch_port", "switch_ip", "port_mark",
+  "order_no", "order_date", "doi", "invoice_no", "invoice_date", "cost", "supplier",
+  "ssd", "amc", "remarks", "department", "status", "system_type", "pc", "pc_type",
+  "printer_ip_address", "amc_warranty", "switch_port_no", "switch_ip_address"
 ];
 
 
@@ -790,14 +791,13 @@ app.route('/add-asset')
           });
         });
       } else {
-        const values = assetFields.map(f => formData[f] || '');
-        values.push(institution_id); // Add institution ID at end
+const values = assetFields.map(f => formData[f] || '');
+values.push(institution_id); // For the institution_id column
 
-        const insertQuery = `
-          INSERT INTO assets (${[...assetFields, 'institution_id'].join(',')})
-          VALUES (${[...assetFields, 'institution_id'].map(() => '?').join(',')})
-        `;
-
+const insertQuery = `
+  INSERT INTO assets (${[...assetFields, 'institution_id'].join(',')})
+  VALUES (${[...assetFields, 'institution_id'].map(() => '?').join(',')})
+`;
         db.run(insertQuery, values, function (insertErr) {
           if (insertErr) {
             console.error('❌ Insert error:', insertErr.message);
