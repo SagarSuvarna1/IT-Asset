@@ -758,12 +758,13 @@ app.route('/add-asset')
 
     // ✅ Define assetFields here
     const assetFields = [
-      "asset_id", "serial_number", "item_category", "model_name", "department", "location",
-      "username", "processor", "speed", "hdd", "ram", "monitor", "ip", "mac",
-      "warranty", "switch_port", "switch_ip", "order_no", "order_date",
-      "doi", "invoice_no", "invoice_date", "cost", "supplier", "ssd",
-      "amc_or_warranty", "remarks"
-    ];
+  "asset_id", "serial_number", "item_category", "model_name", "department", "location",
+  "user_name", "processor", "speed", "hdd", "ram", "monitor", "ip", "mac",
+  "warranty", "switch_port_no", "switch_ip_address", "order_no", "order_date",
+  "doi", "invoice_no", "invoice_date", "cost", "supplier", "ssd",
+  "amc_warranty", "remarks"
+];
+
 
     const checkQuery = `
       SELECT * FROM assets WHERE (asset_id = ? OR serial_number = ?) AND institution_id = ?
