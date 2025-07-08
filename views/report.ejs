@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Asset Report</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+<div class="container mt-4">
+  <h3 class="mb-4 text-primary">📊 IT Asset Report</h3>
+
+  <!-- Filters -->
+  <form class="row g-2 mb-4" method="GET" action="/report">
+    <div class="col-md-4">
+      <input type="text" name="search" class="form-control" placeholder="🔍 Search by Serial No or Asset ID" value="<%= search || '' %>">
+    </div>
+    <div class="col-md-3">
+      <select class="form-select" name="type">
+        <option value="">All Types</option>
+        <option value="PC" <%= type === 'PC' ? 'selected' : '' %>>PC</option>
+        <option value="Laptop" <%= type === 'Laptop' ? 'selected' : '' %>>Laptop</option>
+        <option value="Printer" <%= type === 'Printer' ? 'selected' : '' %>>Printer</option>
+        <option value="Scanner" <%= type === 'Scanner' ? 'selected' : '' %>>Scanner</option>
+      </select>
+    </div>
+
+    <div class="col-md-3">
+      <select class="form-select" name="department">
+        <option value="">All Departments</option>
+        <% departments.forEach(d => { %>
+          <option value="<%= d.name %>" <%= department === d.name ? 'selected' : '' %>><%= d.name %></option>
+        <% }) %>
+      </select>
+    </div>
+    <div class="col-md-2 d-flex gap-2">
+      <button class="btn btn-primary w-50">Filter</button>
+      <a href="/export-assets?<%= type ? `type=${type}&` : '' %><%= department ? `department=${department}&` : '' %><%= search ? `search=${search}` : '' %>" class="btn btn-success w-50">📥 Excel</a>
+    </div>
+
+  </form>
+
+  <!-- Table -->
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Asset ID</th>
+          <th>Serial No</th>
+          <th>Type</th>
+          <th>Sub-Type</th>
+          <th>Model</th>
+          <th>User</th>
+          <th>Dept</th>
+          <th>Loc</th>
+          <th>Processor</th>
+          <th>Speed</th>
+          <th>HDD</th>
+          <th>SSD</th>
+          <th>RAM</th>
+          <th>Monitor</th>
+          <th>IP</th>
+          <th>MAC</th>
+          <th>Switch Port</th>
+          <th>Switch IP</th>
+          <th>Order No</th>
+          <th>Order Date</th>
+          <th>DOI</th>
+          <th>Invoice No</th>
+          <th>Invoice Date</th>
+          <th>Warranty</th>
+          <th>AMC</th>
+          <th>Supplier</th>
+          <th>Cost</th>
+          <th>Status</th>
+          <th>Remarks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (assets.length === 0) { %>
+          <tr>
+            <td colspan="29" class="text-center">No records found</td>
+          </tr>
+        <% } else { %>
+          <% assets.forEach(a => { %>
+            <tr>
+              <td><%= a.id %></td>
+              <td><%= a.asset_id %></td>
+              <td><%= a.serial_number %></td>
+              <td><%= a.asset_type %></td>
+              <td><%= a.item_category %></td>
+              <td><%= a.model_name %></td>
+              <td><%= a.user_name %></td>
+              <td><%= a.department %></td>
+              <td><%= a.location %></td>
+              <td><%= a.processor %></td>
+              <td><%= a.speed %></td>
+              <td><%= a.hdd %></td>
+              <td><%= a.ssd %></td>
+              <td><%= a.ram %></td>
+              <td><%= a.monitor %></td>
+              <td><%= a.ip_address %></td>
+              <td><%= a.mac_address %></td>
+              <td><%= a.switch_port %></td>
+              <td><%= a.switch_ip %></td>
+              <td><%= a.order_no %></td>
+              <td><%= a.order_date %></td>
+              <td><%= a.doi %></td>
+              <td><%= a.invoice_no %></td>
+              <td><%= a.invoice_date %></td>
+              <td><%= a.warranty %></td>
+              <td><%= a.amc %></td>
+              <td><%= a.supplier %></td>
+              <td><%= a.cost %></td>
+              <td><%= a.status %></td>
+              <td><%= a.remarks %></td>
+            </tr>
+          <% }) %>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+
+  <a href="/dashboard" class="btn btn-outline-secondary mt-4">⬅ Back</a>
+</div>
+</body>
+</html>

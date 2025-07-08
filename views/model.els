@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Model Master</title>
+  <link rel="stylesheet" href="/styles.css"> <!-- Optional: link your CSS -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      padding: 30px;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    form {
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      max-width: 500px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    select, input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      margin-top: 30px;
+      border-collapse: collapse;
+      background: #fff;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+  <h2>Model Master</h2>
+
+  <form method="POST" action="/models">
+    <label for="model_name">Model Name</label>
+    <input type="text" id="model_name" name="model_name" required>
+
+    <label for="category">Category</label>
+    <select name="category" id="category" required>
+      <option value="">-- Select Category --</option>
+      <option value="Desktop">Desktop</option>
+      <option value="AIO">All-in-One</option>
+      <option value="Laptop">Laptop</option>
+      <option value="Printer">Printer</option>
+      <option value="Scanner">Scanner</option>
+      <option value="Monitor">Monitor</option>
+    </select>
+
+    <button type="submit">➕ Add Model</button>
+  </form>
+
+  <h3>Model List</h3>
+  <table>
+    <tr>
+      <th>#</th>
+      <th>Model Name</th>
+      <th>Category</th>
+    </tr>
+    <% if (models.length === 0) { %>
+      <tr><td colspan="3">No models found.</td></tr>
+    <% } else { %>
+      <% models.forEach((model, index) => { %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= model.model_name %></td>
+          <td><%= model.category %></td>
+        </tr>
+      <% }) %>
+    <% } %>
+  </table>
+</body>
+</html>

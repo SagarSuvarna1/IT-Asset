@@ -1,0 +1,183 @@
+<!-- views/edit-form.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Asset</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+<div class="container mt-4">
+  <div class="card p-4">
+    <h2 class="text-center text-primary">✏️ Edit Asset</h2>
+
+    <form method="POST" action="/update/<%= asset.id %>">
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label>Asset Type</label>
+          <select class="form-select" name="asset_type" required>
+            <option value="">Select...</option>
+            <option value="PC" <%= asset.asset_type === 'PC' ? 'selected' : '' %>>PC</option>
+            <option value="Laptop" <%= asset.asset_type === 'Laptop' ? 'selected' : '' %>>Laptop</option>
+            <option value="Printer" <%= asset.asset_type === 'Printer' ? 'selected' : '' %>>Printer</option>
+            <option value="Scanner" <%= asset.asset_type === 'Scanner' ? 'selected' : '' %>>Scanner</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label>Item Category</label>
+          <input type="text" class="form-control" name="item_category" value="<%= asset.item_category %>">
+        </div>
+        <div class="col-md-4">
+          <label>Item Subcategory</label>
+          <input type="text" class="form-control" name="item_sub_category" value="<%= asset.item_sub_category %>">
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label>Serial Number</label>
+          <input class="form-control" name="serial_number" value="<%= asset.serial_number %>" required>
+        </div>
+        <div class="col-md-4">
+          <label>Asset ID</label>
+          <input class="form-control" name="asset_id" value="<%= asset.asset_id %>" required>
+        </div>
+        <div class="col-md-4">
+          <label>User Name</label>
+          <input class="form-control" name="user_name" value="<%= asset.user_name %>">
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label>Processor</label>
+          <input class="form-control" name="processor" value="<%= asset.processor %>">
+        </div>
+        <div class="col-md-4">
+          <label>Speed</label>
+          <input class="form-control" name="speed" value="<%= asset.speed %>">
+        </div>
+        <div class="col-md-4">
+          <label>HDD</label>
+          <input class="form-control" name="hdd" value="<%= asset.hdd %>">
+        </div>
+        <div class="col-md-4 mt-3">
+          <label>Monitor</label>
+          <input class="form-control" name="monitor" value="<%= asset.monitor %>">
+        </div>
+        <div class="col-md-4 mt-3">
+          <label>RAM</label>
+          <input class="form-control" name="ram" value="<%= asset.ram %>">
+        </div>
+        <div class="col-md-4 mt-3">
+          <label>IP Address</label>
+          <input class="form-control" name="ip_address" value="<%= asset.ip_address %>">
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label>MAC Address</label>
+          <input class="form-control" name="mac_address" value="<%= asset.mac_address %>">
+        </div>
+        <div class="col-md-4">
+          <label>Switch Port</label>
+          <input class="form-control" name="switch_port" value="<%= asset.switch_port %>">
+        </div>
+        <div class="col-md-4">
+          <label>Switch IP</label>
+          <input class="form-control" name="switch_ip" value="<%= asset.switch_ip %>">
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label>Port Mark</label>
+          <input class="form-control" name="port_mark" value="<%= asset.port_mark %>">
+        </div>
+        <div class="col-md-4">
+          <label>Order No</label>
+          <input class="form-control" name="order_no" value="<%= asset.order_no %>">
+        </div>
+        <div class="col-md-4">
+          <label>Order Date</label>
+          <input type="date" class="form-control" name="order_date" value="<%= asset.order_date %>">
+        </div>
+        <div class="col-md-4 mt-3">
+          <label>Date of Installation</label>
+          <input type="date" class="form-control" name="doi" value="<%= asset.doi %>">
+        </div>
+        <div class="col-md-4 mt-3">
+          <label>Invoice No</label>
+          <input class="form-control" name="invoice_no" value="<%= asset.invoice_no %>">
+        </div>
+        <div class="col-md-4 mt-3">
+          <label>Invoice Date</label>
+          <input type="date" class="form-control" name="invoice_date" value="<%= asset.invoice_date %>">
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label>Cost</label>
+          <input class="form-control" name="cost" value="<%= asset.cost %>">
+        </div>
+        <div class="col-md-4">
+          <label>Supplier</label>
+          <input class="form-control" name="supplier" value="<%= asset.supplier %>">
+        </div>
+        <div class="col-md-4">
+          <label>SSD</label>
+          <input class="form-control" name="ssd" value="<%= asset.ssd %>">
+        </div>
+        <div class="col-md-4 mt-3">
+          <label>Warranty</label>
+          <input class="form-control" name="warranty" value="<%= asset.warranty %>">
+        </div>
+        <div class="col-md-4 mt-3">
+          <label>AMC/Warranty</label>
+          <input class="form-control" name="amc" value="<%= asset.amc %>">
+        </div>
+        <div class="col-md-4 mt-3">
+          <label>Remarks</label>
+          <textarea class="form-control" name="remarks" rows="2"><%= asset.remarks %></textarea>
+        </div>
+      </div>
+
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <label>Department</label>
+          <select class="form-select" name="department">
+            <% departments.forEach(d => { %>
+              <option value="<%= d.name %>" <%= asset.department === d.name ? 'selected' : '' %>><%= d.name %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label>Model</label>
+          <select class="form-select" name="model_name">
+            <% models.forEach(m => { %>
+              <option value="<%= m.model_name %>" <%= asset.model_name === m.model_name ? 'selected' : '' %>><%= m.model_name %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label>Location</label>
+          <select class="form-select" name="location">
+            <% locations.forEach(l => { %>
+              <option value="<%= l.location_name %>" <%= asset.location === l.location_name ? 'selected' : '' %>><%= l.floor %> - <%= l.location_name %></option>
+            <% }) %>
+          </select>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <button class="btn btn-success px-4" type="submit">💾 Update</button>
+        <a href="/delete/<%= asset.id %>" onclick="return confirm('Are you sure?')" class="btn btn-danger ms-2">🗑️ Delete</a>
+        <a href="/edit-asset" class="btn btn-secondary ms-2">⬅ Back</a>
+      </div>
+    </form>
+  </div>
+</div>
+</body>
+</html>

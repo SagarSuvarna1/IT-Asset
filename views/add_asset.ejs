@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Add Asset</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    body {
+      background: linear-gradient(to right, #f1f4f9, #dfe9f3);
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .card {
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      text-align: center;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 25px;
+    }
+    label {
+      font-weight: 600;
+    }
+    .form-control, .form-select {
+      border-radius: 8px;
+    }
+    .alert {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+<%
+  var showSuccess = typeof success !== 'undefined' ? success : false;
+  var showError = typeof error !== 'undefined' ? error : null;
+  var formData = typeof formData !== 'undefined' ? formData : {};
+%>
+
+  <div class="container mt-4">
+    <div class="card p-4">
+      <h2><i class="fas fa-plus-circle"></i> Add Asset</h2>
+
+      <% if (showSuccess) { %>
+        <div class="alert alert-success text-center fw-bold fs-5 rounded shadow-sm" role="alert">
+          ✅ Asset saved successfully!
+          <div class="mt-3">
+            <a href="/add-asset" class="btn btn-outline-primary me-2"><i class="fas fa-plus"></i> Add More</a>
+            <a href="/dashboard" class="btn btn-outline-success"><i class="fas fa-home"></i> Go to Dashboard</a>
+          </div>
+        </div>
+      <% } %>
+
+      <% if (showError) { %>
+        <div class="alert alert-danger text-center fw-bold fs-6 rounded shadow-sm" role="alert">
+          ⚠️ <%= showError %>
+        </div>
+      <% } %>
+
+      <form action="/add-asset" method="POST">
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label for="assetType">System Type</label>
+            <select class="form-select" id="assetType" name="asset_type" required>
+              <option value="">Select...</option>
+              <option value="PC">PC</option>
+              <option value="Laptop">Laptop</option>
+              <option value="Printer">Printer</option>
+              <option value="Scanner">Scanner</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row mb-3" id="pcTypeDiv" style="display: none;">
+          <div class="col-md-4">
+            <label for="pcType">PC Type</label>
+            <select class="form-select" name="item_sub_category" id="pcType">
+              <option value="">Select...</option>
+              <option value="AIO">AIO</option>
+              <option value="Desktop">Desktop</option>
+              <option value="Workstation">Workstation</option>
+              <option value="Server">Server</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row mb-3" id="printerTypeDiv" style="display: none;">
+          <div class="col-md-4">
+            <label>Printer Type</label>
+            <select class="form-select" name="printer_type" id="printerType">
+              <option value="">Select...</option>
+              <option value="USB">USB</option>
+              <option value="Network">Network</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row mb-3" id="printerIPDiv" style="display: none;">
+          <div class="col-md-4">
+            <label>Printer IP Address</label>
+            <input name="printer_ip" class="form-control" value="<%= formData.printer_ip || '' %>" />
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label>Department</label>
+            <select class="form-select" name="department" required>
+              <option value="">Select...</option>
+              <% departments.forEach(d => { %>
+                <option value="<%= d.name %>" <%= formData.department === d.name ? 'selected' : '' %>><%= d.name %></option>
+              <% }) %>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label>Model Name</label>
+            <select class="form-select" name="model_name" id="modelDropdown" required>
+              <option value="">Select...</option>
+              <% models.forEach(m => { %>
+                <option value="<%= m.model_name %>" data-category="<%= m.category %>" <%= formData.model_name === m.model_name ? 'selected' : '' %>><%= m.model_name %></option>
+              <% }) %>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label>Location</label>
+            <select class="form-select" name="location" required>
+              <option value="">Select...</option>
+              <% locations.forEach(loc => { %>
+                <option value="<%= loc.location_name %>" <%= formData.location === loc.location_name ? 'selected' : '' %>><%= loc.floor %> - <%= loc.location_name %></option>
+              <% }) %>
+            </select>
+          </div>
+        </div>
+
+        <!-- Example Field Group -->
+        <div class="row">
+          <div class="col-md-4 mb-3"><label>Serial No</label><input name="serial_number" class="form-control" required></div>
+          <div class="col-md-4 mb-3"><label>Asset ID</label><input name="asset_id" class="form-control" required></div>
+          <div class="col-md-4 mb-3"><label>User Name</label><input name="user_name" class="form-control"></div>
+          <div class="col-md-4 mb-3"><label>Warranty</label><input name="warranty" class="form-control"></div>
+          <div class="col-md-4 mb-3"><label>Cost</label><input name="cost" class="form-control"></div>
+          <div class="col-md-4 mb-3"><label>Item Category</label><input name="item_category" class="form-control"></div>
+          <div class="col-md-4 mb-3"><label>Processor</label><input name="processor" class="form-control"></div>
+          <div class="col-md-4 mb-3"><label>Speed</label><input name="speed" class="form-control"></div>
+          <div class="col-md-4 mb-3"><label>HDD</label><input name="hdd" class="form-control"></div>
+          <div class="col-md-4 mb-3"><label>Monitor</label><input name="monitor" class="form-control"></div>
+          <div class="col-md-4 mb-3"><label>RAM</label><input name="ram" class="form-control"></div>
+          <div class="col-md-4 mb-3"><label>IP Address</label><input name="ip_address" class="form-control"></div>
+          <div class="col-md-4 mb-3"><label>MAC Address</label><input name="mac_address" class="form-control"></div>
+          <div class="col-md-4 mb-3"><label>Switch Port No</label><input name="switch_port" class="form-control"></div>
+          <div class="col-md-4 mb-3"><label>Switch IP Address</label><input name="switch_ip" class="form-control"></div>
+          <div class="col-md-4 mb-3"><label>Port Mark</label><input name="port_mark" class="form-control"></div>
+          <div class="col-md-4 mb-3"><label>Order No</label><input name="order_no" class="form-control"></div>
+          <div class="col-md-4 mb-3"><label>Order Date</label><input type="date" name="order_date" class="form-control"></div>
+          <div class="col-md-4 mb-3"><label>DOI</label><input type="date" name="doi" class="form-control"></div>
+          <div class="col-md-4 mb-3"><label>Invoice No</label><input name="invoice_no" class="form-control"></div>
+          <div class="col-md-4 mb-3"><label>Invoice Date</label><input type="date" name="invoice_date" class="form-control"></div>
+          <div class="col-md-4 mb-3"><label>Supplier</label><input name="supplier" class="form-control"></div>
+          <div class="col-md-4 mb-3"><label>SSD</label><input name="ssd" class="form-control"></div>
+          <div class="col-md-4 mb-3"><label>AMC/Warranty</label><input name="amc" class="form-control"></div>
+          <div class="col-md-12 mb-3"><label>Remarks</label><textarea name="remarks" class="form-control" rows="2"></textarea></div>
+        </div>
+
+        <div class="text-center mt-4">
+          <button type="submit" class="btn btn-success px-4"><i class="fas fa-save"></i> Save Asset</button>
+          <a href="/dashboard" class="btn btn-secondary ms-2">Back</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const assetType = document.getElementById('assetType');
+    const pcTypeDiv = document.getElementById('pcTypeDiv');
+    const printerTypeDiv = document.getElementById('printerTypeDiv');
+    const printerIPDiv = document.getElementById('printerIPDiv');
+    const printerType = document.getElementById('printerType');
+    const modelDropdown = document.getElementById('modelDropdown');
+
+    assetType?.addEventListener('change', () => {
+      const val = assetType.value;
+      pcTypeDiv.style.display = (val === 'PC') ? 'flex' : 'none';
+      printerTypeDiv.style.display = (val === 'Printer') ? 'flex' : 'none';
+      printerIPDiv.style.display = 'none';
+
+      Array.from(modelDropdown.options).forEach(option => {
+        if (!option.value) return;
+        const category = option.getAttribute('data-category');
+        option.style.display = (category === val) ? 'block' : 'none';
+      });
+
+      modelDropdown.value = "";
+    });
+
+    printerType?.addEventListener('change', () => {
+      printerIPDiv.style.display = (printerType.value === 'Network') ? 'flex' : 'none';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Condemned Assets</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between mb-3">
+      <h3>🚫 Condemned Assets</h3>
+      <a href="/export-condemned" class="btn btn-success">📥 Export to Excel</a>
+    </div>
+
+    <table class="table table-bordered table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>Asset ID</th>
+          <th>Serial No</th>
+          <th>Type</th>
+          <th>Model</th>
+          <th>Department</th>
+          <th>Invoice Date</th>
+          <th>Remarks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% assets.forEach(asset => { %>
+          <tr>
+            <td><%= asset.asset_id %></td>
+            <td><%= asset.serial_number %></td>
+            <td><%= asset.item_category %></td>
+            <td><%= asset.model_name %></td>
+            <td><%= asset.department %></td>
+            <td><%= asset.invoice_date %></td>
+            <td><%= asset.remarks %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+    <a href="/dashboard" class="btn btn-secondary mt-3">⬅ Back to Dashboard</a>
+  </div>
+</body>
+</html>

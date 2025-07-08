@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Corporate Dashboard | IT Asset Management</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    body {
+      background: #f5f7fa;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .header-bar {
+      padding: 15px 30px;
+      background-color: #014aad;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .role-pill {
+      background: #ffffff;
+      color: #333;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 500;
+      font-size: 13.5px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+   .logout-icon-img {
+  width: 38px;
+  height: 38px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  text-decoration: none;
+}
+
+.logout-icon-img img {
+  width: 18px;
+  height: 18px;
+}
+
+.logout-icon-img:hover {
+  background-color: #e53935;
+}
+
+.logout-icon-img:hover img {
+  filter: brightness(0) invert(1); /* Turn icon white on red bg */
+}
+
+
+
+    .dashboard-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: #0d47a1;
+      margin-top: 25px;
+      text-align: center;
+    }
+
+    .dashboard-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      height: 90px;
+      border-radius: 14px;
+      color: white;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+      font-size: 16px;
+      letter-spacing: 0.3px;
+    }
+
+    .dashboard-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 22px rgba(0, 0, 0, 0.15);
+      text-shadow: 1px 1px 2px rgba(255,255,255,0.2);
+    }
+
+    .dashboard-card i {
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+
+    .bg-gradient-blue { background: linear-gradient(135deg, #2196f3, #21cbf3); }
+    .bg-gradient-green { background: linear-gradient(135deg, #4caf50, #81c784); }
+    .bg-gradient-orange { background: linear-gradient(135deg, #fb8c00, #ffb74d); }
+    .bg-gradient-red { background: linear-gradient(135deg, #e53935, #ef5350); }
+    .bg-gradient-purple { background: linear-gradient(135deg, #8e24aa, #ba68c8); }
+    .bg-gradient-cyan { background: linear-gradient(135deg, #00acc1, #4dd0e1); }
+    .bg-gradient-teal { background: linear-gradient(135deg, #00796b, #4db6ac); }
+    .bg-gradient-dark { background: linear-gradient(135deg, #263238, #455a64); }
+    .bg-gradient-gray { background: linear-gradient(135deg, #757575, #bdbdbd); }
+
+    .row.g-3 > .col-6 {
+      flex: 0 0 auto;
+      width: 18%;
+      min-width: 150px;
+    }
+
+    .search-section {
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    .search-input {
+      border-radius: 10px;
+      padding: 10px 14px;
+      width: 300px;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .section-divider {
+      margin: 40px 0 10px;
+      border-top: 1px solid #ccc;
+    }
+
+    .table-container {
+      padding: 0 25px;
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-card {
+        height: 100px;
+      }
+
+      .row.g-3 > .col-6 {
+        width: 45%;
+      }
+
+      .search-input {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header-bar">
+  <h4 class="mb-0 text-white">
+    <i class="fas fa-network-wired me-2"></i> IT Asset Management
+  </h4>
+  <div class="d-flex align-items-center gap-3 flex-wrap text-white">
+    <div><strong>Institution:</strong> <%= institutionName %></div>
+    <div>👋 Welcome <strong><%= currentUser.username %></strong></div>
+    <div class="role-pill">Role: <%= currentUser.role %></div>
+    <a href="/logout" class="logout-icon-img" title="Logout">
+  <img src="https://cdn-icons-png.flaticon.com/512/1828/1828479.png" alt="Logout Icon" />
+</a>
+  
+    </a>
+  </div>
+</div>
+
+<!-- Dashboard Title -->
+<div class="dashboard-title">Dashboard Overview</div>
+
+<!-- Dashboard Cards -->
+<div class="container-fluid px-4 mt-4">
+  <div class="row g-3 justify-content-center">
+    <% if (allowedModules.includes('AddAsset')) { %>
+      <div class="col-6 col-md-2">
+        <a href="/add-asset" class="dashboard-card bg-gradient-green">
+          <i class="fas fa-plus-circle"></i>Add Asset
+        </a>
+      </div>
+    <% } %>
+
+    <% if (allowedModules.includes('EditAsset')) { %>
+      <div class="col-6 col-md-2">
+        <a href="/edit-asset" class="dashboard-card bg-gradient-blue">
+          <i class="fas fa-edit"></i>Edit Asset
+        </a>
+      </div>
+    <% } %>
+
+    <% if (allowedModules.includes('TransferAsset')) { %>
+      <div class="col-6 col-md-2">
+        <a href="/transfer-asset" class="dashboard-card bg-gradient-orange">
+          <i class="fas fa-random"></i>Transfer Asset
+        </a>
+      </div>
+    <% } %>
+
+    <% if (allowedModules.includes('condemned')) { %>
+      <div class="col-6 col-md-2">
+        <a href="/condemned" class="dashboard-card bg-gradient-red">
+          <i class="fas fa-ban"></i>Condemned
+        </a>
+      </div>
+    <% } %>
+
+    <% if (allowedModules.includes('BulkUploader')) { %>
+      <div class="col-6 col-md-2">
+        <a href="/bulk-upload" class="dashboard-card bg-gradient-purple">
+          <i class="fas fa-upload"></i>Bulk Upload
+        </a>
+      </div>
+    <% } %>
+
+    <% if (allowedModules.includes('MasterUpManagement')) { %>
+      <div class="col-6 col-md-2">
+        <a href="/master-management" class="dashboard-card bg-gradient-cyan">
+          <i class="fas fa-database"></i>Master Mgmt
+        </a>
+      </div>
+    <% } %>
+
+    <% if (allowedModules.includes('Setting')) { %>
+      <div class="col-6 col-md-2">
+        <a href="/settings" class="dashboard-card bg-gradient-teal">
+          <i class="fas fa-cogs"></i>Settings
+        </a>
+      </div>
+    <% } %>
+
+    <% if (allowedModules.includes('AuditTrial')) { %>
+      <div class="col-6 col-md-2">
+        <a href="/audit-log" class="dashboard-card bg-gradient-gray">
+          <i class="fas fa-file-alt"></i>Audit Trail
+        </a>
+      </div>
+    <% } %>
+
+    <% if (allowedModules.includes('Report')) { %>
+      <div class="col-6 col-md-2">
+        <a href="/report" class="dashboard-card bg-gradient-dark">
+          <i class="fas fa-chart-bar"></i>Reports
+        </a>
+      </div>
+    <% } %>
+	    <% if (allowedModules.includes('logout')) { %>
+      <div class="col-6 col-md-2">
+        <a href="/logout" class="dashboard-card bg-gradient-dark">
+          <i class="fas fa-chart-bar"></i>logout
+        </a>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<!-- Divider -->
+<div class="section-divider"></div>
+
+<!-- Search Section -->
+<div class="search-section">
+  <form method="GET" action="/dashboard" class="d-flex justify-content-center gap-2 flex-wrap">
+    <input type="text" name="query" class="search-input" placeholder="🔍 Search Serial No or Asset ID..." value="<%= typeof query !== 'undefined' ? query : '' %>">
+    <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+  </form>
+</div>
+
+<!-- Records Table -->
+<% if (typeof records !== 'undefined' && records.length > 0) { %>
+  <div class="table-container mt-4">
+    <table class="table table-bordered table-hover text-center">
+      <thead class="table-primary">
+        <tr>
+          <th>ID</th>
+          <th>Asset ID</th>
+          <th>Serial No</th>
+          <th>Type</th>
+          <th>Model</th>
+          <th>Department</th>
+          <th>Location</th>
+          <th>User</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% records.forEach(r => { %>
+          <tr>
+            <td><%= r.id %></td>
+            <td><%= r.asset_id %></td>
+            <td><%= r.serial_number %></td>
+            <td><%= r.asset_type %></td>
+            <td><%= r.model_name %></td>
+            <td><%= r.department %></td>
+            <td><%= r.location %></td>
+            <td><%= r.user_name %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+<% } else if (typeof query !== 'undefined') { %>
+  <div class="alert alert-warning text-center mt-4">
+    <i class="fas fa-info-circle"></i> No records found for "<%= query %>"
+  </div>
+<% } %>
+
+</body>
+</html>

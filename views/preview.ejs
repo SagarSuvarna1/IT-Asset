@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>IT Asset Depertment-Wise Asset Preview</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    @media print {
+      .no-print { display: none; }
+      body { background: none; }
+      .print-header {
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 10px;
+      }
+    }
+
+    body {
+      background: #f0f2f5;
+      padding: 30px;
+    }
+
+    .box {
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    }
+
+    .title-line {
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    table th, table td {
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container box">
+    <div class="d-flex justify-content-between align-items-center mb-4 no-print">
+      <h4 class="fw-bold">IT Asset Depertment-Wise Asset Preview</h4>
+      <button class="btn btn-primary" onclick="window.print()">🖨️ Print</button>
+    </div>
+
+    <!-- Header Title -->
+    <div class="print-header mb-4">
+      <div class="title-line">🏥 KMC Hospital, Attavar</div>
+      <% if (selectedDepartment) { %>
+        <div class="title-line">🖥️ IT Asset Details of <%= selectedDepartment %></div>
+      <% } %>
+    </div>
+
+    <!-- Department Select -->
+    <form method="GET" class="row g-3 mb-4 no-print">
+      <div class="col-md-6">
+        <label for="department" class="form-label fw-bold">Select Department</label>
+        <select id="department" name="department" class="form-select" required>
+          <option value="">-- Choose Department --</option>
+          <% departments.forEach(dep => { %>
+            <option value="<%= dep.name %>" <%= selectedDepartment === dep.name ? 'selected' : '' %>>
+              <%= dep.name %>
+            </option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="col-md-6 d-flex align-items-end">
+        <button type="submit" class="btn btn-success">🔍 Show Assets</button>
+      </div>
+    </form>
+
+    <% if (assets && assets.length > 0) { %>
+      <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+          <tr>
+            <th>Asset ID</th>
+            <th>Serial No</th>
+            <th>Type</th>
+            <th>Sub-Type</th>
+            <th>Model</th>
+            <th>User</th>
+            <th>Location</th>
+            <th>IP</th>
+            <th>MAC</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% assets.forEach(a => { %>
+            <tr>
+              <td><%= a.asset_id %></td>
+              <td><%= a.serial_number %></td>
+              <td><%= a.item_category || '-' %></td>
+              <td><%= a.item_sub_category || '-' %></td>
+              <td><%= a.model_name || '-' %></td>
+              <td><%= a.user_name || '-' %></td>
+              <td><%= a.location || '-' %></td>
+              <td><%= a.ip_address || '-' %></td>
+              <td><%= a.mac_address || '-' %></td>
+              <td><%= a.status || '-' %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } else if (selectedDepartment) { %>
+      <div class="alert alert-warning mt-3">
+        No assets found for <strong><%= selectedDepartment %></strong>.
+      </div>
+    <% } %>
+
+  </div>
+</body>
+</html>

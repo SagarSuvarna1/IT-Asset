@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>IT Asset Summary</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <style>
+    body {
+      background: #f5f7fa;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .header-bar {
+      padding: 15px 30px;
+      background-color: #014aad;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .role-pill {
+      background: #ffffff;
+      color: #333;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 500;
+      font-size: 13.5px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .logout-icon-img {
+      width: 38px;
+      height: 38px;
+      background-color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.3s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      text-decoration: none;
+    }
+
+    .logout-icon-img img {
+      width: 18px;
+      height: 18px;
+    }
+
+    .logout-icon-img:hover {
+      background-color: #e53935;
+    }
+
+    .logout-icon-img:hover img {
+      filter: brightness(0) invert(1);
+    }
+
+    .dashboard-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: #0d47a1;
+      margin: 25px 0 15px;
+      text-align: center;
+    }
+
+    .dashboard-card {
+      height: 90px;
+      border-radius: 14px;
+      color: white;
+      font-weight: 700;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .dashboard-card h6 {
+      font-size: 14px;
+    }
+
+    .dashboard-card h3 {
+      font-size: 22px;
+    }
+
+    .dashboard-card:hover {
+      transform: scale(1.04);
+      transition: 0.3s;
+    }
+
+    .bg-gradient-blue { background: linear-gradient(135deg, #2196f3, #21cbf3); }
+    .bg-gradient-green { background: linear-gradient(135deg, #4caf50, #81c784); }
+    .bg-gradient-orange { background: linear-gradient(135deg, #fb8c00, #ffb74d); }
+    .bg-gradient-red { background: linear-gradient(135deg, #e53935, #ef5350); }
+    .bg-gradient-dark { background: linear-gradient(135deg, #263238, #455a64); }
+
+    .chart-container {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    canvas {
+      max-height: 320px;
+    }
+
+    @media (max-width: 768px) {
+      canvas {
+        max-height: 280px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header-bar">
+  <h4 class="mb-0">
+    <i class="fas fa-network-wired me-2"></i> IT Asset Summary
+  </h4>
+  <div class="d-flex align-items-center gap-3 flex-wrap text-white">
+    <div><strong>Institution:</strong> <%= institutionName %></div>
+    <div>👋 Welcome <strong><%= currentUser.username %></strong></div>
+    <div class="role-pill">Role: <%= currentUser.role %></div>
+    <a href="/logout" class="logout-icon-img" title="Logout">
+      <img src="https://cdn-icons-png.flaticon.com/512/1828/1828479.png" alt="Logout Icon" />
+    </a>
+  </div>
+</div>
+
+<div class="container py-4">
+
+  <h2 class="dashboard-title">Summary & Chart Analysis</h2>
+
+  <!-- Summary Cards -->
+  <div class="row g-3 justify-content-center mb-4">
+    <div class="col-md-2 col-6">
+      <div class="dashboard-card bg-gradient-blue">
+        <h6>Total Assets</h6><h3><%= totalAssets %></h3>
+      </div>
+    </div>
+    <div class="col-md-2 col-6">
+      <div class="dashboard-card bg-gradient-green">
+        <h6>Laptops</h6><h3><%= laptopCount %></h3>
+      </div>
+    </div>
+    <div class="col-md-2 col-6">
+      <div class="dashboard-card bg-gradient-orange">
+        <h6>Desktops</h6><h3><%= desktopCount %></h3>
+      </div>
+    </div>
+    <div class="col-md-2 col-6">
+      <div class="dashboard-card bg-gradient-red">
+        <h6>Printers</h6><h3><%= printerCount %></h3>
+      </div>
+    </div>
+    <div class="col-md-2 col-6">
+      <div class="dashboard-card bg-gradient-dark">
+        <h6>Out of Warranty</h6><h3><%= outOfWarrantyCount %></h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="row">
+    <div class="col-md-6">
+      <div class="chart-container">
+        <h6 class="text-center mb-3">Asset Status</h6>
+        <canvas id="statusPieChart"></canvas>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="chart-container">
+        <h6 class="text-center mb-3">Top 7 Departments</h6>
+        <canvas id="topDeptBarChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="chart-container">
+        <h6 class="text-center mb-3">Condemned by Model</h6>
+        <canvas id="condemnedModelBar"></canvas>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="chart-container">
+        <h6 class="text-center mb-3">Monthly Asset Trend</h6>
+        <canvas id="monthlyTrendLineChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  new Chart(document.getElementById('statusPieChart'), {
+    type: 'pie',
+    data: {
+      labels: <%- JSON.stringify(statusLabels) %>,
+      datasets: [{
+        data: <%- JSON.stringify(statusData) %>,
+        backgroundColor: ['#42a5f5', '#66bb6a', '#ffa726', '#ef5350', '#ab47bc']
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
+    }
+  });
+
+  new Chart(document.getElementById('topDeptBarChart'), {
+    type: 'bar',
+    data: {
+      labels: <%- JSON.stringify(topDeptLabels) %>,
+      datasets: [{
+        label: 'Assets',
+        data: <%- JSON.stringify(topDeptData) %>,
+        backgroundColor: '#42a5f5'
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } }
+    }
+  });
+
+  new Chart(document.getElementById('condemnedModelBar'), {
+    type: 'bar',
+    data: {
+      labels: <%- JSON.stringify(condemnedLabels) %>,
+      datasets: [{
+        label: 'Condemned Count',
+        data: <%- JSON.stringify(condemnedData) %>,
+        backgroundColor: '#ef5350'
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } }
+    }
+  });
+
+  new Chart(document.getElementById('monthlyTrendLineChart'), {
+    type: 'line',
+    data: {
+      labels: <%- JSON.stringify(monthLabels) %>,
+      datasets: [{
+        label: 'Assets Added',
+        data: <%- JSON.stringify(monthData) %>,
+        borderColor: '#66bb6a',
+        fill: false,
+        tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true
+    }
+  });
+</script>
+
+</body>
+</html>
